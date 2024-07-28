@@ -24,6 +24,11 @@ Ensure you have Node.js version 18 or higher installed.
    ```sh
    npm install
    ```
+   or use npm ci for a clean install (recommended in automation environments)
+
+   ```sh
+   npm ci
+   ```
 
 ## Running the Tests
 
