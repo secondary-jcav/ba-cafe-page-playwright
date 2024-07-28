@@ -1,10 +1,10 @@
 # Product List Sorting Feature - Automated Tests
 
-This project contains automated tests for the Product List Sorting feature using Playwright. The tests cover scenarios such as default sorting, sorting options, ascending/descending order, and more.
+This project contains automated tests for the Product List Sorting feature using Playwright. TC covered are A-Z sorting and recovery from a 500 response from the backend while sorting.
 
 ## Prerequisites
 
-Ensure you have Node.js version 18 or higher installed. You can download it from [Node.js official website](https://nodejs.org/).
+Ensure you have Node.js version 18 or higher installed.
 
 ## Setup
 
