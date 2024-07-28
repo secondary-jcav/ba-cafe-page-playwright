@@ -15,13 +15,12 @@ test.describe("Sorting Feature", () => {
   });
 
   test("Ascending sorting by product name", async ({ page }) => {
-    const initialProductIds = await page.$$eval("li.product-item", (els) =>
-      els.map((el) => el.getAttribute("data-product-id"))
-    );
+    const initialProductIds = await cafePage.getProductIds();
 
-    console.log(initialProductIds);
-
+    // open sorting menu
     await cafePage.defaultSorting.click();
+
+    // click on A-Z sorting
     const sortingPromise = page.waitForRequest(
       (request) =>
         request
@@ -33,24 +32,11 @@ test.describe("Sorting Feature", () => {
     await cafePage.ascSorting.click();
     await sortingPromise;
 
-    await page.waitForFunction((initialProductIds) => {
-      const currentProductIds = Array.from(
-        document.querySelectorAll("li.product-item")
-      ).map((el) => el.getAttribute("data-product-id"));
-      return (
-        JSON.stringify(currentProductIds) !== JSON.stringify(initialProductIds)
-      );
-    }, initialProductIds);
-    //"https://highlifeshop.com/cafe/tom-kerridge-ham-hock-and-smoked-cheddar-sandwich"
+    // page takes some time to render changes
+    await cafePage.waitForProductIdsChange(initialProductIds);
 
-    const newProductIds = await page.$$eval("li.product-item", (els) =>
-      els.map((el) => el.getAttribute("data-product-id"))
-    );
-
-    console.log(newProductIds);
-
+    // assert sorting is done correctly
     const firstProductInitial = await cafePage.firstProductNameInitial();
-    console.log(firstProductInitial);
     expect(firstProductInitial).toBe("a");
   });
 });

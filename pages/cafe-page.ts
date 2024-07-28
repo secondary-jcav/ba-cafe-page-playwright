@@ -29,6 +29,26 @@ export class CafePage {
     await this.page.goto(urls.cafe);
   }
 
+  async getProductIds(): Promise<string[]> {
+    const productIds = await this.page.$$eval(
+      "li.product-item",
+      (els: Element[]) =>
+        els.map((el) => el.getAttribute("data-product-id") ?? "")
+    );
+    return productIds;
+  }
+
+  async waitForProductIdsChange(initialProductIds: string[]) {
+    await this.page.waitForFunction((initialProductIds) => {
+      const currentProductIds = Array.from(
+        document.querySelectorAll("li.product-item")
+      ).map((el) => el.getAttribute("data-product-id"));
+      return (
+        JSON.stringify(currentProductIds) !== JSON.stringify(initialProductIds)
+      );
+    }, initialProductIds);
+  }
+
   async firstProductNameInitial(): Promise<string | undefined> {
     await this.firstProductPhoto.waitFor();
     const firstProduct = await this.page.$(".product-item-photo");
