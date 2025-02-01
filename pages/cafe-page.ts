@@ -1,5 +1,4 @@
 import { type Locator, type Page } from "@playwright/test";
-import urls from "../url/url";
 export class CafePage {
   readonly page: Page;
   readonly britishAirwaysLink: Locator;
@@ -9,6 +8,7 @@ export class CafePage {
   readonly ascSorting: Locator;
   readonly descSorting: Locator;
   readonly firstProductPhoto: Locator;
+  readonly cookiesSaved: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -23,10 +23,11 @@ export class CafePage {
     this.ascSorting = page.locator("li").filter({ hasText: "Product A-Z" });
     this.descSorting = page.locator("li").filter({ hasText: "Product Z-A" });
     this.firstProductPhoto = page.locator(".product-item-photo").nth(0);
+    this.cookiesSaved = page.getByText("You saved your cookie");
   }
 
   async goto() {
-    await this.page.goto(urls.cafe);
+    await this.page.goto("https://highlifeshop.com/cafe");
   }
 
   async getProductIds(): Promise<string[]> {
